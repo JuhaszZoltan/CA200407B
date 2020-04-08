@@ -13,6 +13,7 @@ namespace CA200407B
         static List<Jatekos> jatekosok;
         static int fordSzam;
         static int fordSorSzam;
+        static int gyt = int.MaxValue;
         static void Main()
         {
             F02();
@@ -21,7 +22,44 @@ namespace CA200407B
             F05();
             F06();
             F07();
+            F08();
             Console.ReadKey();
+        }
+
+        private static void F08()
+        {
+            Console.Write("8. feladat: ");
+
+            var dic = new Dictionary<int, int>();
+            foreach (var j in jatekosok)
+            {
+                if (!dic.ContainsKey(j.Tippek[fordSorSzam - 1]))
+                    dic.Add(j.Tippek[fordSorSzam - 1], 1);
+                else dic[j.Tippek[fordSorSzam - 1]]++;
+            }
+
+            if (!dic.ContainsValue(1))
+            {
+                Console.WriteLine("Nem volt egyedi tipp a megadott fordulóban!");
+            }
+            else
+            {
+                foreach (var kvp in dic)
+                    if (kvp.Value == 1 && kvp.Key < gyt) gyt = kvp.Key;
+                Console.WriteLine($"A nyertes tippa megadott fordulóban: {gyt}");
+            }
+
+            //LINQ
+            //var r = jatekosok
+            //    .Select(x => x.Tippek[fordSorSzam - 1])
+            //    .GroupBy(x => x)
+            //    .Where(x => x.Count() == 1);       
+            //if (r.Count() != 0)
+            //{
+            //    gyt = r.Min(x => x.Key);
+            //    Console.WriteLine($"A nyertes tippa megadott fordulóban: {gyt}");
+            //}
+            //else Console.WriteLine("Nem volt egyedi tipp a megadott fordulóban!");
         }
 
         private static void F07()
